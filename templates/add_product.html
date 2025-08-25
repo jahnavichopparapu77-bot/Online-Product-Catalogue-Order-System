@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product | Modern Shop</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        h2 {
+            color: #333;
+            font-weight: 600;
+            font-size: 32px;
+            position: relative;
+        }
+        
+        h2:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            margin-top: 10px;
+            border-radius: 2px;
+        }
+        
+        .btn-secondary {
+            padding: 10px 20px;
+            background: white;
+            color: #6a11cb;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border: 2px solid #6a11cb;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-secondary:hover {
+            background: #6a11cb;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(106, 17, 203, 0.3);
+        }
+        
+        .form-container {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #444;
+            font-size: 16px;
+        }
+        
+        .input-with-icon {
+            position: relative;
+        }
+        
+        .input-with-icon i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6a11cb;
+        }
+        
+        input[type="text"],
+        input[type="number"],
+        textarea {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+        
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        input:focus,
+        textarea:focus {
+            border-color: #6a11cb;
+            box-shadow: 0 0 0 2px rgba(106, 17, 203, 0.2);
+        }
+        
+        .input-hint {
+            font-size: 14px;
+            color: #777;
+            margin-top: 5px;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(106, 17, 203, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(106, 17, 203, 0.4);
+        }
+        
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+        
+        .form-divider {
+            height: 1px;
+            background: #eee;
+            margin: 30px 0;
+        }
+        
+        .preview-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            border-left: 4px solid #6a11cb;
+        }
+        
+        .preview-title {
+            font-weight: 600;
+            color: #6a11cb;
+            margin-bottom: 15px;
+        }
+        
+        .preview-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .preview-item {
+            font-size: 14px;
+        }
+        
+        .preview-label {
+            font-weight: 600;
+            color: #555;
+        }
+        
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .preview-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .container {
+                padding: 25px 20px;
+            }
+            
+            .form-container {
+                padding: 20px;
+            }
+            
+            input[type="text"],
+            input[type="number"],
+            textarea {
+                padding: 12px 12px 12px 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h2>Add New Product</h2>
+            <a href="{{ url_for('admin_products') }}" class="btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Products
+            </a>
+        </header>
+        
+        <div class="form-container">
+            <form method="post" id="productForm">
+                <div class="form-group">
+                    <label for="name">Product Name</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-tag"></i>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="input-hint">Enter a descriptive name for your product</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-align-left"></i>
+                        <textarea id="description" name="description" required></textarea>
+                    </div>
+                    <div class="input-hint">Describe the product features and benefits</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="price">Price (₹)</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-rupee-sign"></i>
+                        <input type="number" id="price" name="price" step="0.01" min="0" required>
+                    </div>
+                    <div class="input-hint">Enter the price in Indian Rupees</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="stock">Stock Quantity</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-boxes"></i>
+                        <input type="number" id="stock" name="stock" min="0" required>
+                    </div>
+                    <div class="input-hint">How many units are available?</div>
+                </div>
+                
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-plus-circle"></i> Add Product
+                </button>
+            </form>
+            
+            <div class="form-divider"></div>
+            
+            <div class="preview-section">
+                <div class="preview-title">Product Preview</div>
+                <div class="preview-content">
+                    <div class="preview-item">
+                        <span class="preview-label">Name:</span>
+                        <span id="preview-name">Not specified</span>
+                    </div>
+                    <div class="preview-item">
+                        <span class="preview-label">Price:</span>
+                        <span id="preview-price">₹0.00</span>
+                    </div>
+                    <div class="preview-item">
+                        <span class="preview-label">Stock:</span>
+                        <span id="preview-stock">0 units</span>
+                    </div>
+                    <div class="preview-item">
+                        <span class="preview-label">Description:</span>
+                        <span id="preview-description">Not provided</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Real-time form preview
+        document.addEventListener('DOMContentLoaded', function() {
+            const nameInput = document.getElementById('name');
+            const descriptionInput = document.getElementById('description');
+            const priceInput = document.getElementById('price');
+            const stockInput = document.getElementById('stock');
+            
+            const previewName = document.getElementById('preview-name');
+            const previewDescription = document.getElementById('preview-description');
+            const previewPrice = document.getElementById('preview-price');
+            const previewStock = document.getElementById('preview-stock');
+            
+            // Update preview as user types
+            nameInput.addEventListener('input', function() {
+                previewName.textContent = this.value || 'Not specified';
+            });
+            
+            descriptionInput.addEventListener('input', function() {
+                previewDescription.textContent = this.value || 'Not provided';
+            });
+            
+            priceInput.addEventListener('input', function() {
+                previewPrice.textContent = this.value ? '₹' + parseFloat(this.value).toFixed(2) : '₹0.00';
+            });
+            
+            stockInput.addEventListener('input', function() {
+                previewStock.textContent = this.value ? this.value + ' units' : '0 units';
+            });
+            
+            // Form validation
+            const form = document.getElementById('productForm');
+            form.addEventListener('submit', function(e) {
+                let valid = true;
+                const inputs = form.querySelectorAll('input[required], textarea[required]');
+                
+                inputs.forEach(input => {
+                    if (!input.value.trim()) {
+                        valid = false;
+                        input.style.borderColor = '#f44336';
+                    } else {
+                        input.style.borderColor = '#ddd';
+                    }
+                });
+                
+                if (!valid) {
+                    e.preventDefault();
+                    alert('Please fill in all required fields.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
