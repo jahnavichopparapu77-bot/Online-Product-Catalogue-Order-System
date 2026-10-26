@@ -1,4 +1,11 @@
-# Modern Shop --- E-Commerce Web Application
+<!-- Technology summary intentionally placed at the top for quick project identification. -->
+**Framework:** Flask (Python web framework)  
+**Programming Language:** Python  
+**Frontend:** HTML5, CSS3  
+**Database:** SQLite  
+**Supporting Library:** Werkzeug (password hashing and verification)
+
+# Online Product Catalogue & Order System
 
 A learning-oriented e-commerce web application built with **Python,
 Flask, SQLite, HTML, and CSS**. It demonstrates the core flow of an
@@ -29,7 +36,7 @@ through an admin area.
 
 ## Project Overview
 
-Modern Shop is a small web application that illustrates how a
+The Online Product Catalogue & Order System is a small web application that illustrates how a
 browser-based storefront can communicate with a Python backend and a
 relational database. Flask handles incoming HTTP requests and page
 rendering. SQLite stores user, product, and order records. HTML
@@ -247,7 +254,7 @@ Organize the files in the following layout so Flask can locate its
 templates:
 
 ``` text
-modern-shop/
+Online-Product-Catalogue-Order-System/
 ├── app.py
 ├── init_db.py
 ├── database.db              # Local database; do not publish real user/order data
