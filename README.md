@@ -96,67 +96,93 @@ access; it should be strengthened before any real-world deployment.
 
 ## System Architecture
 
-``` mermaid
+```mermaid
 flowchart TD
-    A[Customer or Admin] --> B[Web Browser]
-    B --> C[HTML and CSS Pages]
-    C --> D[Flask Application]
-    D --> E[Route and Session Logic]
-    E --> F[SQLite Database]
-    F --> E
-    E --> D
-    D --> B
+    U["Customer or Admin"] -->|Opens a page / submits a form| B["Web Browser"]
+    B -->|HTTP request| R["Flask Route"]
+    R --> S["Request Handling and Session Checks"]
+    S -->|Read or write data when needed| DB[("SQLite Database")]
+    DB -->|Query result| S
+    S --> T["Render HTML Template or Redirect"]
+    T -->|HTTP response| B
+    B -->|Displays page| U
+
+    classDef actor fill:#f5f5f5,stroke:#555,color:#111
+    classDef app fill:#eaf2ff,stroke:#356ac3,color:#111
+    classDef data fill:#eaf7ed,stroke:#34834a,color:#111
+    class U,B actor
+    class R,S,T app
+    class DB data
 ```
 
 ### How the components work together
 
-1.  A user opens a page in the browser.
-2.  The browser sends an HTTP request to the Flask application.
-3.  Flask selects the route associated with the requested URL.
-4.  The route validates the relevant input and checks session/role
-    information where applicable.
-5.  The application reads from or writes to SQLite when data is needed.
-6.  Flask renders an HTML template or redirects the browser to another
-    route.
+1.  A customer or admin opens a page or submits a form in the browser.
+2.  The browser sends an HTTP request to the matching Flask route.
+3.  Flask handles the request and checks session or role information where
+    the route requires it.
+4.  The route reads from or writes to SQLite when data is needed.
+5.  The application returns a rendered HTML page or a redirect.
+6.  The browser displays the response to the user.
 
 ## Application Flow
 
 ### Customer journey
 
-``` mermaid
+```mermaid
 flowchart TD
-    A([Start]) --> B[Open Product Catalogue]
-    B --> C{Search for a Product?}
-    C -- Yes --> D[Filter by Name or Description]
-    C -- No --> E[Browse Products]
-    D --> F[Add Product to Cart]
+    A(["Start"]) --> B["Open product catalogue"]
+    B --> C{"Search for a product?"}
+    C -->|Yes| D["Filter by name or description"]
+    C -->|No| E["Browse catalogue"]
+    D --> F["Choose a product"]
     E --> F
-    F --> G[Open Cart]
-    G --> H{Signed In?}
-    H -- No --> I[Register or Sign In]
-    I --> J[Return to Checkout]
-    H -- Yes --> J
-    J --> K[Submit Delivery Address]
-    K --> L[Create Order Records]
-    L --> M[Update Product Stock]
-    M --> N[Clear Cart]
-    N --> O([Finish])
+    F --> G["Add product to cart"]
+    G --> H["Open cart"]
+    H --> I{"Signed in?"}
+    I -->|No| J["Register or sign in"]
+    J --> K["Continue to checkout"]
+    I -->|Yes| K
+    K --> L["Submit delivery address"]
+    L --> M["Create order record(s)"]
+    M --> N["Reduce product stock"]
+    N --> O["Clear cart"]
+    O --> P(["Order flow complete"])
+
+    classDef startend fill:#f5f5f5,stroke:#555,color:#111
+    classDef action fill:#eaf2ff,stroke:#356ac3,color:#111
+    classDef decision fill:#fff4d6,stroke:#b8860b,color:#111
+    class A,P startend
+    class B,D,E,F,G,H,J,K,L,M,N,O action
+    class C,I decision
 ```
 
 ### Admin journey
 
-``` mermaid
+```mermaid
 flowchart TD
-    A([Admin Opens Admin Page]) --> B{Admin Role in Session?}
-    B -- No --> C[Redirect to Login]
-    B -- Yes --> D[Open Admin Area]
-    D --> E[View Products or Orders]
-    E --> F{Add a Product?}
-    F -- Yes --> G[Submit Product Details]
-    G --> H[Save Product to SQLite]
-    H --> I[Refresh Product List]
-    F -- No --> J([Finish])
-    I --> J
+    A(["Admin requests a protected page"]) --> B{"Admin role in session?"}
+    B -->|No| C["Redirect to login"]
+    C --> D(["Access not granted"])
+    B -->|Yes| E["Open admin area"]
+    E --> F{"Choose an action"}
+    F -->|View products| G["Read products from SQLite"]
+    G --> H["Display product list"]
+    F -->|Add product| I["Submit product details"]
+    I --> J["Validate and save product"]
+    J --> K["Refresh product list"]
+    F -->|View orders| L["Read order records from SQLite"]
+    L --> M["Display order information"]
+    H --> N(["Finish"])
+    K --> N
+    M --> N
+
+    classDef startend fill:#f5f5f5,stroke:#555,color:#111
+    classDef action fill:#eaf2ff,stroke:#356ac3,color:#111
+    classDef decision fill:#fff4d6,stroke:#b8860b,color:#111
+    class A,D,N startend
+    class C,E,G,H,I,J,K,L,M action
+    class B,F decision
 ```
 
 ## Database Design
