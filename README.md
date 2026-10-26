@@ -3,7 +3,6 @@
 **Programming Language:** Python  
 **Frontend:** HTML5, CSS3  
 **Database:** SQLite  
-**Supporting Library:** Werkzeug (password hashing and verification)
 
 # Online Product Catalogue & Order System
 
